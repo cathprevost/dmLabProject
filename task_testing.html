@@ -7,6 +7,7 @@
   <script src="rating_module.js"></script>
   <script src="jsPsych/jspsych.js"></script>
   <script src="jsPsych/plugins/jspsych-rating.js"></script>
+  <script src="jsPsych/plugins/jspsych-survey-likert.js"></script>
   <script src="jsPsych/plugins/jspsych-forcedchoice.js"></script>
   <script src="jsPsych/plugins/jspsych-call-function.js"></script>
   <link rel="stylesheet" href="jsPsych/css/jspsych.css"></link>
@@ -122,11 +123,18 @@
 	    stimulus: '<p>:)</p>',
 	    is_html: true
 	  }
-
+	
+	var likert_scale = ["1. Disagree strongly", "2. Disagree moderately", "3. Disagree a little","4. Neither agree nor disagree"
+	   				 ,"5. Agree a little","6. Agree moderately","7. Agree strongly"]
+	
 	var likert_survey_trial = {
 	    type: 'survey-likert',
-	    questions : ["1", "2"],
-	    labels: ["1", "2"]
+	    questions : ["1. I see myself as extraverted, enthusiastic. ", "2. I see myself as critical, quarrelsome.",
+	    "3. I see myself as dependable, self-disciplined. ","4. I see myself as anxious, easily upset. ", 
+	    "5. I see myself as open to new experiences, complex ","6. I see myself as reserved, quiet. ",
+	    "7. I see myself as sympathetic, warm. ","8. I see myself as disorganized, careless ",
+	    "9. I see myself as calm, emotionally stable.","10. I see myself as conventional, uncreative."],
+	    labels: [likert_scale,likert_scale,likert_scale,likert_scale,likert_scale,likert_scale,likert_scale,likert_scale,likert_scale,likert_scale]
 	}
 	
   //Global object that will hold the pairs of artwork. forced-choice trials will fetch their stimuli from here dynamically using simple array index with jsPsych's functions-as-plugin-params
@@ -179,7 +187,7 @@
   
   jsPsych.init({
     display_element: $('#jspsych-target'),
-    timeline: [node, build_node, forcedChoiceNode],
+    timeline: [likert_survey_trial,node, build_node, forcedChoiceNode],
     on_finish: function() {
       jsPsych.data.displayData();
     },
