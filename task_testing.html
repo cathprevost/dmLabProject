@@ -23,12 +23,99 @@
 </body>
 <script>
 	
+	var imgURLs = [
+		"https://s12.postimg.org/98pcppvl9/image_0001.jpg",
+		"https://s12.postimg.org/8kgi6rwvh/image_0002.jpg",
+		"https://s12.postimg.org/vzyfc4gml/image_0003.jpg",
+		"https://s12.postimg.org/u9feamz3h/image_0004.jpg",
+		"https://s12.postimg.org/cxf1p75m5/image_0005.jpg",
+		"https://s12.postimg.org/au4mhj5t9/image_0006.jpg",
+		"https://s12.postimg.org/nmsqhghf1/image_0007.jpg",
+		"https://s12.postimg.org/b9fwajrql/image_0008.jpg",
+		"https://s12.postimg.org/npcm4al2l/image_0009.jpg",
+		"https://s12.postimg.org/vjd7posvh/image_0010.jpg",
+		"https://s12.postimg.org/5p80dni99/image_0011.jpg",
+		"https://s12.postimg.org/sryjctjql/image_0012.jpg",
+		"https://s12.postimg.org/uxsu7bn71/image_0013.jpg",
+		"https://s12.postimg.org/lrajk1hyl/image_0014.jpg",
+		"https://s12.postimg.org/42issf67h/image_0015.jpg",
+		"https://s12.postimg.org/nlne1s4z1/image_0016.jpg",
+		"https://s12.postimg.org/s8tg3jsbx/image_0017.jpg",
+		"https://s12.postimg.org/4j40eutyl/image_0018.jpg",
+		"https://s12.postimg.org/5zfiwzwvh/image_0019.jpg",
+		"https://s12.postimg.org/jhmf9a90t/image_0020.jpg",
+		"https://s12.postimg.org/waf4mya0d/image_0021.jpg",
+		"https://s12.postimg.org/lc3v4rlf1/image_0022.jpg",
+		"https://s12.postimg.org/owzqnzpyl/image_0023.jpg",
+		"https://s12.postimg.org/jmurwp5pp/image_0024.jpg",
+		"https://s12.postimg.org/mi7v3k9pp/image_0025.jpg",
+		"https://s12.postimg.org/cyy6a3m7h/image_0026.jpg",
+		"https://s12.postimg.org/kg7dpbbql/image_0027.jpg",
+		"https://s12.postimg.org/l703v3e3x/image_0028.jpg",
+		"https://s12.postimg.org/xmwtou7fx/image_0029.jpg",
+		"https://s12.postimg.org/xbfdc2qzx/image_0030.jpg",
+		"https://s12.postimg.org/xobtfdfl9/image_0031.jpg",
+		"https://s12.postimg.org/gp2v044dp/image_0032.jpg",
+		"https://s12.postimg.org/mrahqlstp/image_0033.jpg",
+		"https://s12.postimg.org/fpck4ep7x/image_0034.jpg",
+		"https://s12.postimg.org/gg5aa6rl9/image_0035.jpg",
+		"https://s12.postimg.org/3q11x3jn1/image_0036.jpg",
+		"https://s12.postimg.org/8pyi51p9p/image_0037.jpg",
+		"https://s12.postimg.org/45cbq45kd/image_0038.jpg",
+		"https://s12.postimg.org/p3iho75f1/image_0039.jpg",
+		"https://s12.postimg.org/xaahfrvhp/image_0040.jpg",
+		"https://s12.postimg.org/613pf0jsd/image_0041.jpg",
+		"https://s12.postimg.org/z4rxb97vx/image_0042.jpg",
+		"https://s12.postimg.org/r0jt6ilgt/image_0043.jpg",
+		"https://s12.postimg.org/64xiv9p9p/image_0044.jpg",
+		"https://s12.postimg.org/8artprsq5/image_0045.jpg",
+		"https://s12.postimg.org/epqumfzfx/image_0046.jpg",
+		"https://s12.postimg.org/mjrg7u78t/image_0047.jpg",
+		"https://s12.postimg.org/5kihskw19/image_0048.jpg",
+		"https://s12.postimg.org/wjmcnqii5/image_0049.jpg",
+		"https://s12.postimg.org/matvhwugd/image_0050.jpg",
+		"https://s12.postimg.org/4yy4a7qct/image_0051.jpg",
+		"https://s12.postimg.org/seg1fka3x/image_0052.jpg",
+		"https://s12.postimg.org/em1mjxjcd/image_0053.jpg",
+		"https://s12.postimg.org/xfnfgxhkd/image_0054.jpg",
+		"https://s12.postimg.org/t7sn86g4t/image_0055.jpg",
+		"https://s12.postimg.org/9egjfh2r1/image_0056.jpg",
+		"https://s12.postimg.org/92z32pmb1/image_0057.jpg",
+		"https://s12.postimg.org/hmih0gunh/image_0058.jpg",
+		"https://s12.postimg.org/urxz6koj1/image_0059.jpg",
+		"https://s12.postimg.org/e5gexhvl9/image_0060.jpg",
+		"https://s12.postimg.org/n1vsf6bl9/image_0061.jpg",
+		"https://s12.postimg.org/d5upfj5t9/image_0062.jpg",
+		"https://s12.postimg.org/6go5zikh9/image_0063.jpg",
+		"https://s12.postimg.org/wdhuc4o4t/image_0064.jpg",
+		"https://s12.postimg.org/c7ecd8sh9/image_0065.jpg",
+		"https://s12.postimg.org/67ql9l7ot/image_0066.jpg",
+		"https://s12.postimg.org/auwnbcv1p/image_0067.jpg",
+		"https://s12.postimg.org/bygrnbfot/image_0068.jpg",
+		"https://s12.postimg.org/zdyosnzfx/image_0069.jpg",
+		"https://s12.postimg.org/nq4my4ab1/image_0070.jpg",
+		"https://s12.postimg.org/y1ll4ire5/image_0071.jpg",
+		"https://s12.postimg.org/9mdd3gsh9/image_0072.jpg",
+		"https://s12.postimg.org/qo675k7cd/image_0073.jpg",
+		"https://s12.postimg.org/eatcynhnx/image_0074.jpg",
+		"https://s12.postimg.org/66l8twv8t/image_0075.jpg",
+		"https://s12.postimg.org/mivajn9kd/image_0076.jpg",
+		"https://s12.postimg.org/5wdqakgml/image_0077.jpg",
+		"https://s12.postimg.org/584vrmhwt/image_0078.jpg"
+	]
+	
+	var testRating = [];
+	imgURLs.forEach(function(elt){
+		testRating.push({stimulus: elt});
+	});
+	
+	
 	var trial_1 = {
-	    stimulus: 'img/happy_face_1.jpg',
+	    stimulus: 'jsPsych/tests&examples/img/happy_face_1.jpg',
 	  }
 
 	  var trial_2 = {
-	    stimulus: 'img/sad_face_1.jpg',
+	    stimulus: 'jsPsych/tests&examples/img/sad_face_1.jpg',
 	  }
 
 	  var trial_3 = {
@@ -41,6 +128,7 @@
 	    questions : ["1", "2"],
 	    labels: ["1", "2"]
 	}
+	
   //Global object that will hold the pairs of artwork. forced-choice trials will fetch their stimuli from here dynamically using simple array index with jsPsych's functions-as-plugin-params
   var choiceTimeline;
   var forcedChoiceTrialCounter = 0; 
@@ -59,7 +147,7 @@
     // after every rating trial, assign the rating to the url of the image in the ImageRater
     on_finish: function(data){
     	if(data.rating !== null ){
-    		ImageRater.rate(data.stimulus, data.rating);
+    		ImageRater.rate(data.stimulus, data.rating - 4);
     	}
     }
   }
@@ -87,7 +175,7 @@
   }
   
   //load the artworks into the ImageRater
-  ImageRater.loadList(["img/sad_face_1.jpg", "img/happy_face_1.jpg"]);
+  ImageRater.loadList(imgURLs);
   
   jsPsych.init({
     display_element: $('#jspsych-target'),

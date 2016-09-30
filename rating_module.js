@@ -20,13 +20,14 @@
 		};
 		
 		
-		function getLeastUsed(rating, max){
+		function getLeastUsed(rating, max, exclude){
+			exclude = exclude || "";
 			var candidate;
 			var usage = Infinity;
 			var group = vault[rating.toString()];
 			for (url in group){
 				if(group.hasOwnProperty(url)){
-					if(group[url] < usage){
+					if(group[url] < usage && url !== exclude){
 						usage = group[url];
 						candidate = url;
 					}
@@ -121,7 +122,10 @@
 					var pairType = possibilities[pairCursor];
 					// try to find a usable image for each rating in the pair
 					var first = getLeastUsed(pairType[0], repeat_limit);
-					var secnd = getLeastUsed(pairType[1], repeat_limit);
+					var secnd;
+					if(first){
+						secnd = getLeastUsed(pairType[1], repeat_limit, first);
+					}
 					
 					//if we could not find a suitable image for either rating, BUT don't abort, we might be able to reach enough pairs using other pairTypes
 					if(!(first && secnd)){
