@@ -4,6 +4,7 @@
 <head>
   <script src="jsPsych/tests&examples/js/jquery.min.js"></script>
   <script src="jsPsych/tests&examples/js/jquery-ui.min.js"></script>
+  <script src="rating_module.js"></script>
   <script src="jsPsych/jspsych.js"></script>
   <script src="jsPsych/plugins/jspsych-rating.js"></script>
   <script src="jsPsych/plugins/jspsych-forcedchoice.js"></script>
@@ -22,18 +23,15 @@
 </body>
 <script>
 
-  var trial_1 = {
-    stimulus: 'img/happy_face_1.jpg',
-  }
-
-  var trial_2 = {
-    stimulus: 'img/sad_face_1.jpg',
-  }
-
-  var trial_3 = {
-    stimulus: '<p>:)</p>',
-    is_html: true
-  }
+	var likert_survey_trial = {
+	    type: 'survey-likert',
+	    question
+	    timeline: [
+	        {stimulus: 'image1.png'},
+	        {stimulus: 'image2.png'},
+	        {stimulus: 'image3.png'}
+	    ]
+	}
   //Global object that will hold the pairs of artwork. forced-choice trials will fetch their stimuli from here dynamically using simple array index with jsPsych's functions-as-plugin-params
   var choiceTimeline;
   var forcedChoiceTrialCounter = 0; 
