@@ -22,15 +22,24 @@
   <div id="jspsych-target"></div>
 </body>
 <script>
+	
+	var trial_1 = {
+	    stimulus: 'img/happy_face_1.jpg',
+	  }
+
+	  var trial_2 = {
+	    stimulus: 'img/sad_face_1.jpg',
+	  }
+
+	  var trial_3 = {
+	    stimulus: '<p>:)</p>',
+	    is_html: true
+	  }
 
 	var likert_survey_trial = {
 	    type: 'survey-likert',
-	    question
-	    timeline: [
-	        {stimulus: 'image1.png'},
-	        {stimulus: 'image2.png'},
-	        {stimulus: 'image3.png'}
-	    ]
+	    questions : ["1", "2"],
+	    labels: ["1", "2"]
 	}
   //Global object that will hold the pairs of artwork. forced-choice trials will fetch their stimuli from here dynamically using simple array index with jsPsych's functions-as-plugin-params
   var choiceTimeline;
