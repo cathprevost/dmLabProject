@@ -14,7 +14,12 @@
   <link rel="stylesheet" href="jsPsych/tests&examples/css/jquery-ui.css"></link>
   <style>
     img {
-      width: 300px;
+    	width: 300px;
+    }
+     .jspsych-choice-item {
+	    border: solid;
+	    margin: 5px;
+	    padding: 5px;
     }
   </style>
 </head>
@@ -146,6 +151,7 @@
     type: 'rating',
     timing_stim: 0.500,
     timeline: testRating,
+    ratings: ["-3","-2","-1","0","1","2","3"],
     choices: [89, 78], // Y or N
     show_ticks : true,
     labels : ["-3","-2","-1","0","1","2","3"],
@@ -156,7 +162,7 @@
     // after every rating trial, assign the rating to the url of the image in the ImageRater
     on_finish: function(data){
     	if(data.rating !== null ){
-    		ImageRater.rate(data.stimulus, data.rating - 4);
+    		ImageRater.rate(data.stimulus, data.rating);
     	}
     }
   }
