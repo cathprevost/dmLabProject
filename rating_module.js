@@ -6,7 +6,7 @@
 */
 var ImageRater = (function(){
 	var module = {};
-	
+	//hi
 	var unsortedVault = {};
 	
 	var vault = {
