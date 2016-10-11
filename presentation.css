@@ -1,0 +1,12 @@
+.jspsych-single-stim-stimulus  {
+	height: 300px;
+	width: 300px;
+	margin: 10px auto;
+	display: block;'
+}
+
+.jspsych-forcedchoice-stim{
+	height: 300px;
+	width: 300px;
+	margin: 5px 10px;
+}
