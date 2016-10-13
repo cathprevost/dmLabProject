@@ -10,6 +10,7 @@
   <script src="jsPsych/plugins/jspsych-survey-likert.js"></script>
   <script src="jsPsych/plugins/jspsych-forcedchoice.js"></script>
   <script src="jsPsych/plugins/jspsych-call-function.js"></script>
+  <script src="jsPsych/plugins/jspsych-survey-multi-choice.js"></script>
   
   <link rel="stylesheet" href="jsPsych/css/jspsych.css"></link>
   <link rel="stylesheet" href="jsPsych/tests&examples/css/jquery-ui.css"></link>
@@ -118,11 +119,53 @@
 	imgURLs.forEach(function(elt){
 		testRating.push({stimulus: elt});
 	});
+	//Socio-Demo questionnaire implementation
+	var socio_demo_quest = {
+		type: 'survey-multi-choice',
+		questions : ['1. Please specify whether you are: ','2. What is your age? ','3. What is the highest level of education you have completed?',
+				    '4. What is the first language that you learned and still understand?' , '5. Which province/territory do you currently live in?',
+				    '6. How interested are you in politics?', '7. In federal politics, do you usually think of yourself as a:', 
+				    '8. How strongly [Liberal, Conservative, NDP, Bloc, Green] do you feel?',' 9. Are you eligible to vote in Canadian elections?',
+				    '10. Did you vote in the October 2015 Federal election? ]'],
+		options : [['Male', 'Female', 'Other'], ['18-24 years old', '25-34 years old', '35-44 years old', '45-54 years old', '55-64 years old', '65-74 years old',
+		          '75 years or older'], ['Less than High School', 'High School', 'University/College', 'Graduate or Professional degree'],['French','English','Other'],
+		 		  ['Prince Edward Island','Nova Scotia', 'New Brunswick', 'Newfoundland and Labrador', 'Manitoba', 'Saskatchewan', 'Ontario', 'Quebec', 'Alberta', 
+		 		  'British Columbia', 'Yukon', 'Northwest Territories', 'Nunavut'],['Very interested', 'Somewhat interested', 'Not very interested', 'Not at all interested'],
+				  ['Liberal', 'Conservative', 'NDP (New Democrat)', 'Bloc Québécois', 'Green Party', 'None of these', 'Don’t know'], ['Very strongly', 'Fairly strongly', 'Not very strongly'],
+		          ['Yes','No'],['Yes','No','Uncertain']]	
+	};
 	
+	//State evaluation questionnaire implementation
+	var hunger_quest = {
+		type: 'survey-multi-choice',
+		questions: ['On a scale from 1 to 7, please indicate how hungry you are right now. (1= not at all hungry, 4= neither hungry or not hungry, 7= extremely hungry)',
+		            'Please indicate how recently you last ate a meal.'],
+		options: [['1','2','3','4','5','6','7'], ['0-3 hours ago.','3-6 hours ago.','6+ hours ago']],
+		preamble: ['Questions to assess hunger:'],
+		horizontal: true
+	};
+	var fatigue_quest = {
+		type: 'survey-multi-choice',
+		questions: ['On a scale from 1 to 7, please indicate how tired you are right now. (1= not at all tired, 4= neither tired or not tired, 7= extremely tired)',
+		            'Please indicate how recently you last slept.', 'Please indicate how many hours you slept last night.'],
+		options: [['1','2','3','4','5','6','7'], ['0-3 hours ago.', '3-6 hours ago.', '6+ hours ago'], ['0-3 hours','3-6 hours', '6-9 hours', '9+ hours']],
+		preamble: ['Questions to assess fatigue:'],
+		horizontal: true
+	};
+	var stress_quest = {
+		type: 'survey-multi-choice',
+		questions: ['On a scale from 1 to 7, please indicate how stressed you are right now. (1=not at all stressed, 4= neither stressed or not stressed, 7= extremely stressed)'],
+		options: [['1','2','3','4','5','6','7']],
+		preamble: ['Questions to assess stress:'],
+		horizontal: true	
+	};
+	
+	
+	//TIPI implementation
 	var likert_scale = ["1. Disagree strongly", "2. Disagree moderately", "3. Disagree a little","4. Neither agree nor disagree"
-	   				 ,"5. Agree a little","6. Agree moderately","7. Agree strongly"]
+	   				 ,"5. Agree a little","6. Agree moderately","7. Agree strongly"];
 	
-	var likert_survey_trial = {
+	var tipi = {
 	    type: 'survey-likert',
 	    questions : ["1. I see myself as extraverted, enthusiastic. ", "2. I see myself as critical, quarrelsome.",
 	    "3. I see myself as dependable, self-disciplined. ","4. I see myself as anxious, easily upset. ", 
@@ -130,13 +173,15 @@
 	    "7. I see myself as sympathetic, warm. ","8. I see myself as disorganized, careless ",
 	    "9. I see myself as calm, emotionally stable.","10. I see myself as conventional, uncreative."],
 	    labels: [likert_scale,likert_scale,likert_scale,likert_scale,likert_scale,likert_scale,likert_scale,likert_scale,likert_scale,likert_scale]
-	}
+	};
 	
   //Global object that will hold the pairs of artwork. forced-choice trials will fetch their stimuli from here dynamically using simple array index with jsPsych's functions-as-plugin-params
   var choiceTimeline;
   var forcedChoiceTrialCounter = 0; 
   
   var rating_block = {
+		  
+	response:'boxes',
     type: 'rating',
     timeline: testRating,
     ratings: ["-3","-2","-1","0","1","2","3"],
@@ -149,7 +194,7 @@
     		ImageRater.rate(data.stimulus, data.rating);
     	}
     }
-  }
+  };
 
   //A trial that does not do anything for the subject but builds the array of artwork pairs according to spec, to be used to get stimuli for the next phase
   var build_node = {
@@ -160,7 +205,7 @@
 			jsPsych.endExperiment("Could not proceed with choice task");
 		}
 	}
-  }
+  };
 	
   //Represents the binary forced choice task block
   var forcedChoice_block = {
@@ -171,19 +216,22 @@
 	timeline:[
 		{stimuli: function(){return choiceTimeline[forcedChoiceTrialCounter]}}
 	]
-  }
+  };
+  
   
   //load the artworks into the ImageRater
   ImageRater.loadList(imgURLs);
   
   jsPsych.init({
     display_element: $('#jspsych-target'),
-    timeline: [likert_survey_trial, rating_block, build_node, forcedChoice_block],
+    timeline: [socio_demo_quest, hunger_quest, fatigue_quest, stress_quest, tipi, rating_block, build_node, forcedChoice_block],
     on_finish: function() {
       jsPsych.data.displayData();
     },
     default_iti: 250
   });
 </script>
+
+
 
 </html>
