@@ -9,8 +9,10 @@ function runExperiment(){
 			if(element.type == "rating"){
 				//im polishing up the rating block
 			}
-			else if()
-		})
+			else if(element.type =='forcedchoice'){
+				
+			}
+		});
 		
 		jsPsych.init({
 			timeline: settings.timeline,
