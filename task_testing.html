@@ -206,25 +206,31 @@
 		}
 	}
   };
-	
+  
+
   //Represents the binary forced choice task block
   var forcedChoice_block = {
 	type: "forcedchoice",
+	keyboard: true,
+	key_choices: ['q','p'],
 	on_finish: function(data){
 		forcedChoiceTrialCounter++;
 	},
-	timeline:[
-		{stimuli: function(){return choiceTimeline[forcedChoiceTrialCounter]}}
-	]
+	timeline: blockBuilder
   };
   
+  var blockBuilder = [];
+  
+  for(var i; i < 5; i++){
+		blockBuilder.push({stimuli: function(){return choiceTimeline[forcedChoiceTrialCounter]}});
+		};
   
   //load the artworks into the ImageRater
   ImageRater.loadList(imgURLs);
   
   jsPsych.init({
     display_element: $('#jspsych-target'),
-    timeline: [socio_demo_quest, hunger_quest, fatigue_quest, stress_quest, tipi, rating_block, build_node, forcedChoice_block],
+    timeline: [/*socio_demo_quest, hunger_quest, fatigue_quest, stress_quest, tipi,*/ rating_block, build_node, forcedChoice_block],
     on_finish: function() {
       jsPsych.data.displayData();
     },
