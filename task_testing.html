@@ -195,23 +195,31 @@
     	}
     }
   };
-
+  
+  
+  var choiceTrialsNumber = 4;
   //A trial that does not do anything for the subject but builds the array of artwork pairs according to spec, to be used to get stimuli for the next phase
   var build_node = {
 	type: "call-function",
 	func: function(){
-		choiceTimeline = ImageRater.getTimeline(20, [0], 1);
+		choiceTimeline = ImageRater.getTimeline(20, [0], choiceTrialsNumber);
 		if(choiceTimeline === false){
 			jsPsych.endExperiment("Could not proceed with choice task");
 		}
 	}
   };
   
-
+  var blockBuilder = [];
+  
+  for(var i=0; i < choiceTrialsNumber; i++){
+		blockBuilder.push({stimuli: function(){return choiceTimeline[forcedChoiceTrialCounter]}});
+		};
+  
   //Represents the binary forced choice task block
   var forcedChoice_block = {
 	type: "forcedchoice",
 	keyboard: true,
+	prompt: 'Press the key associated with your favorite picture.',
 	key_choices: ['q','p'],
 	on_finish: function(data){
 		forcedChoiceTrialCounter++;
@@ -219,18 +227,25 @@
 	timeline: blockBuilder
   };
   
-  var blockBuilder = [];
+  var ending_questionnaire = {
+	type: "survey-multi-choice",
+	preamble: ["<p>Thank you for completing this study!</p><p> Please note that, even if you check yes to one or many of the questions below, your personal information will not be associated with your results in this study such that your identity will remain anonymous</p>"],
+	questions: ["Do you authorize percept to relay your email adress to this experiment researchers to be entered in a draw for a 500$ gift card to Amazon.ca? ",
+			    "Do you authorize percept to relay your email adress to this experiment researchers, so they can contact you to participate in a similar online follow up study?",
+			    "If you live in the Montreal (Qc) area : Would you be interested in coming in to the lab to participate in one of our other studies and do you authorize percept to relay you email adress to this experiment researchers, so they can contact you? "],
+    options: [["yes","no"],["yes","no"],["yes","no"]],
+    required: [true,true,true],
+    horizontal: true
   
-  for(var i; i < 5; i++){
-		blockBuilder.push({stimuli: function(){return choiceTimeline[forcedChoiceTrialCounter]}});
-		};
+  };
   
+
   //load the artworks into the ImageRater
   ImageRater.loadList(imgURLs);
   
   jsPsych.init({
     display_element: $('#jspsych-target'),
-    timeline: [/*socio_demo_quest, hunger_quest, fatigue_quest, stress_quest, tipi,*/ rating_block, build_node, forcedChoice_block],
+    timeline: [/*socio_demo_quest, hunger_quest, fatigue_quest, stress_quest, tipi, rating_block, build_node, forcedChoice_block,*/ ending_questionnaire],
     on_finish: function() {
       jsPsych.data.displayData();
     },
