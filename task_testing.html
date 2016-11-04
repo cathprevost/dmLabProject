@@ -126,7 +126,7 @@
 				    '4. What is the first language that you learned and still understand?' , '5. Which province/territory do you currently live in?',
 				    '6. How interested are you in politics?', '7. In federal politics, do you usually think of yourself as a:', 
 				    '8. How strongly [Liberal, Conservative, NDP, Bloc, Green] do you feel?',' 9. Are you eligible to vote in Canadian elections?',
-				    '10. Did you vote in the October 2015 Federal election? ]'],
+				    '10. Did you vote in the October 2015 Federal election? '],
 		options : [['Male', 'Female', 'Other'], ['18-24 years old', '25-34 years old', '35-44 years old', '45-54 years old', '55-64 years old', '65-74 years old',
 		          '75 years or older'], ['Less than High School', 'High School', 'University/College', 'Graduate or Professional degree'],['French','English','Other'],
 		 		  ['Prince Edward Island','Nova Scotia', 'New Brunswick', 'Newfoundland and Labrador', 'Manitoba', 'Saskatchewan', 'Ontario', 'Quebec', 'Alberta', 
@@ -245,7 +245,7 @@
   
   jsPsych.init({
     display_element: $('#jspsych-target'),
-    timeline: [/*socio_demo_quest, hunger_quest, fatigue_quest, stress_quest, tipi, rating_block, build_node, forcedChoice_block,*/ ending_questionnaire],
+    timeline: [/*socio_demo_quest, hunger_quest, fatigue_quest, stress_quest, tipi, */rating_block, build_node, forcedChoice_block/*, ending_questionnaire*/],
     on_finish: function() {
       jsPsych.data.displayData();
     },
