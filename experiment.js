@@ -11,7 +11,7 @@ function runExperiment(){
 	    var build_node = {
 			type: "call-function",
 			func: function(){
-				choiceTimeline = ImageRater.getTimeline(20, [0], choiceTrialsNumber);
+				choiceTimeline = ImageRater.getTimeline(20, [0], settings.timeline[2].length);
 				if(choiceTimeline === false){
 					jsPsych.endExperiment("Could not proceed with choice task");
 				}
