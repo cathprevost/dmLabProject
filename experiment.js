@@ -16,7 +16,7 @@ function runExperiment(){
 					jsPsych.endExperiment("Could not proceed with choice task");
 				}
 			}
-	    };
+	    };  
 			    
 	    
 		settings.timeline.forEach(function(block, idx, timeline){
@@ -52,7 +52,8 @@ function runExperiment(){
 			timeline: settings.timeline,
 			on_finish: function(data){
 				serverPsych.save(data);
-			}
+			},
+			display_element: $('#jsPsychTarget')
 		});
 	});
 	
