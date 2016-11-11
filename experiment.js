@@ -9,11 +9,11 @@ function runExperiment(){
 		var tobeadded;
 		var ratingStims = [];
 		
+		ImageRater.loadList(settings.resources.image);
+		
 	    var build_node = {
 			type: "call-function",
 			func: function(){
-				ImageRater.loadList(ratingStims);
-				
 				choiceTimeline = ImageRater.getTimeline(8, [0], 2);
 				if(choiceTimeline === false){
 					jsPsych.endExperiment("Could not proceed with choice task");
@@ -52,7 +52,7 @@ function runExperiment(){
 						blockBuilder.push({stimulus: function(){return forcedChoiceStim[forcedChoiceTrialCounter]}});
 					};
 					return blockBuilder;
-				});
+				})();
 			}
 		});
 		
