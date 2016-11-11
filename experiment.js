@@ -28,7 +28,7 @@ function runExperiment(){
 
 				var stimsOrder = [];
 				tobeadded= idx + 1;
-				ratingStims = jsPsych.randomization.shuffle(settings.resources.images);
+				ratingStims = jsPsych.randomization.shuffle(settings.resources.image);
 			    ratingStims.forEach(function(image, idx, imagesArray){
 					stimsOrder.push({stimulus: image});
 				});	
