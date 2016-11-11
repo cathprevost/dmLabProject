@@ -7,11 +7,14 @@ function runExperiment(){
 		var forcedChoiceStim;
 		var forcedChoiceTrialCounter = 0;		
 		var tobeadded;
+		var ratingStims = [];
 		
 	    var build_node = {
 			type: "call-function",
 			func: function(){
-				choiceTimeline = ImageRater.getTimeline(8, [0], 8);
+				ImageRater.loadList(ratingStims);
+				
+				choiceTimeline = ImageRater.getTimeline(8, [0], 2);
 				if(choiceTimeline === false){
 					jsPsych.endExperiment("Could not proceed with choice task");
 				}
@@ -22,13 +25,20 @@ function runExperiment(){
 		settings.timeline.forEach(function(block, idx, timeline){
 			if(block.type == "rating"){
 				//im polishing up the rating block
+
 				var stimsOrder = [];
 				tobeadded= idx + 1;
-				var ratingStims = jsPsych.randomization.shuffle(settings.resources.images);
+				ratingStims = jsPsych.randomization.shuffle(settings.resources.images);
 			    ratingStims.forEach(function(image, idx, imagesArray){
 					stimsOrder.push({stimulus: image});
 				});	
 			    block.timeline = stimsOrder;
+			    block.on_finish = function(data){
+			    	if(data.rating !== null ){
+			    		ImageRater.rate(data.stimulus, data.rating);
+			    	}
+				}
+			    
 			}
 			else if(block.type =='forcedchoice'){
 				//im polishing up the forcedChoice block
