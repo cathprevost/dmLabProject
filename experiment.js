@@ -9,13 +9,13 @@ function runExperiment(){
 		var tobeadded;
 		var ratingStims = [];
 		
+		ImageRater.loadList(settings.resources.image);
+		
 	    var build_node = {
 			type: "call-function",
 			func: function(){
-				ImageRater.loadList(ratingStims);
-				
-				choiceTimeline = ImageRater.getTimeline(8, [0], 2);
-				if(choiceTimeline === false){
+				forcedChoiceStim = ImageRater.getTimeline(8, [0], 2);
+				if(forcedChoiceStim == false){
 					jsPsych.endExperiment("Could not proceed with choice task");
 				}
 			}
@@ -47,12 +47,13 @@ function runExperiment(){
 				}
 				
 				block.timeline = (function(){
-					for(var i=0; i < settings.length; i++){
-						var blockBuilder = [];
-						blockBuilder.push({stimulus: function(){return forcedChoiceStim[forcedChoiceTrialCounter]}});
+					var blockBuilder = [];
+					for(var i=0; i < block.length; i++){
+						
+						blockBuilder.push({stimuli: function(){return forcedChoiceStim[forcedChoiceTrialCounter]}});
 					};
 					return blockBuilder;
-				});
+				})();
 			}
 		});
 		
