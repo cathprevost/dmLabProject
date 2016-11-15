@@ -34,6 +34,10 @@ function runExperiment(){
 			else if(block.type =='forcedchoice'){
 				//im polishing up the forcedChoice block
 				block.on_finish = function(data){
+					jsPsych.data.addDataToLastTrial({
+						leftRating: ImageRater.getRating(data.first),
+						rightRating: ImageRater.getRating(data.last)
+					});
 					forcedChoiceTrialCounter++;
 				}
 				
