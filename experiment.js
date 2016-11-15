@@ -11,16 +11,7 @@ function runExperiment(){
 		
 		ImageRater.loadList(settings.resources.image);
 		
-	    var build_node = {
-			type: "call-function",
-			func: function(){
-				forcedChoiceStim = ImageRater.getTimeline(8, [0], 2);
-				if(forcedChoiceStim == false){
-					jsPsych.endExperiment("Could not proceed with choice task");
-				}
-			}
-	    };
-			    
+	    var build_node;		    
 	    
 		settings.timeline.forEach(function(block, idx, timeline){
 			if(block.type == "rating"){
@@ -48,7 +39,19 @@ function runExperiment(){
 				
 				block.timeline = (function(){
 					var blockBuilder = [];
-					for(var i=0; i < block.length; i++){
+					
+					build_node = {
+						type: "call-function",
+						func: function(){
+							forcedChoiceStim = ImageRater.getTimeline(block.repeats, block.distances, block.num_pairs);
+							if(forcedChoiceStim == false){
+								jsPsych.endExperiment("Could not proceed with choice task");
+							}
+						}
+				    };
+					
+					var num_trials = block.num_pairs * block.distances.length;
+					for(var i=0; i < num_trials; i++){
 						
 						blockBuilder.push({stimuli: function(){return forcedChoiceStim[forcedChoiceTrialCounter]}});
 					};
@@ -59,6 +62,7 @@ function runExperiment(){
 		
 		settings.timeline.splice(tobeadded, 0, build_node);
 		
+		
 		jsPsych.init({
 			timeline: settings.timeline,
 			on_finish: function(data){
@@ -67,5 +71,4 @@ function runExperiment(){
 			display_element: $('#jsPsychTarget')
 		});
 	});
-	
 }

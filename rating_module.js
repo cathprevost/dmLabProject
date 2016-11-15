@@ -131,6 +131,7 @@ var ImageRater = (function(){
 				//choose which of the possible pair types to try
 				var pairType = possibilities[pairCursor];
 				// try to find a usable image for each rating in the pair
+				//TODO: prevent generating any pair that is the same
 				var first = getLeastUsed(pairType[0], repeat_limit);
 				var secnd;
 				if(first){
