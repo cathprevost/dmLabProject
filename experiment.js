@@ -32,6 +32,9 @@ function runExperiment(){
 			    
 			}
 			else if(block.type =='forcedchoice'){
+				block.distances = block.distances || [0,1,2];
+				block.repeat = block.repeat || 8;
+				block.num_pairs = block.num_pairs || 4;
 				//im polishing up the forcedChoice block
 				block.on_finish = function(data){
 					jsPsych.data.addDataToLastTrial({
