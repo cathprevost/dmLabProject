@@ -14,3 +14,7 @@
 #jsPsychTarget{
 	padding-top: 200px;	
 }
+
+.jspsych-response{
+	text-align: center;
+}
