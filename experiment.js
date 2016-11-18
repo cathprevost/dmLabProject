@@ -32,8 +32,15 @@ function runExperiment(){
 			    
 			}
 			else if(block.type =='forcedchoice'){
+				block.distances = block.distances || [0,1,2];
+				block.repeat = block.repeat || 8;
+				block.num_pairs = block.num_pairs || 4;
 				//im polishing up the forcedChoice block
 				block.on_finish = function(data){
+					jsPsych.data.addDataToLastTrial({
+						leftRating: ImageRater.getRating(data.first),
+						rightRating: ImageRater.getRating(data.last)
+					});
 					forcedChoiceTrialCounter++;
 				}
 				
@@ -65,10 +72,10 @@ function runExperiment(){
 		
 		jsPsych.init({
 			timeline: settings.timeline,
-			on_finish: function(data){
+			on_finish:function(data){
 				serverPsych.save({
-					data:data
-				});
+				data:data
+				})
 			},
 			display_element: $('#jsPsychTarget')
 		});

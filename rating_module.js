@@ -85,8 +85,16 @@ var ImageRater = (function(){
 	*/
 	module.rate = function(url, rating){
 		vault[rating.toString()][url] = 0;
+		unsortedVault[url]=rating;
 	}
 	
+	/**
+	 * Returns the rating of an image according to its url
+	 */
+	module.getRating = function(url){
+		return unsortedVault[url];
+	}
+		
 	/**
 	* Returns the number of images that have been given the specified rating so far
 	*/
