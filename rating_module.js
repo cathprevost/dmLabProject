@@ -30,27 +30,21 @@ var ImageRater = (function(){
 	 * @return {string|boolean} An image url if found, or false if none respects the maximum usage count
 	 * @private
 	 */
-	function getLeastUsed(rating, max, exclude){
+	function getImage(rating, max, exclude){
 		exclude = exclude || "";
 		var candidate;
 		var usage = Infinity;
 		var group = vault[rating.toString()];
-		for (url in group){
-			if(group.hasOwnProperty(url)){
-				if(group[url] < usage && url !== exclude){
-					usage = group[url];
-					candidate = url;
-				}
-			}	
-		}
-		if(usage > max){
-			//failed to find an entry used less than the max param
-			return false;
-		}
-		else{
-			group[candidate] = group[candidate] + 1;
-			return candidate;
-		}
+		
+		var possibleImages = Object.keys(group)
+		shuffle(possibleImage);
+		
+		possibleImages.forEach(function(url){
+			if(group[url] < max){
+				return url;
+			}
+		})
+		return false;
 	};
 	
 	function shuffle(a) {
@@ -102,6 +96,16 @@ var ImageRater = (function(){
 		return Object.keys(vault[rating.toString()]).length;
 	}
 	
+	function alreadyHas(arr, target){
+		for(var i=0;i<arr.length; i++){
+			if((arr[i][0] == target[0] && arr[i][1] == target[1]) || (arr[i][0] == target[1] && arr[i][1] == target[0])){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
 	/**
 	* 
 	*/
@@ -110,16 +114,16 @@ var ImageRater = (function(){
 		var pairs = {};
 		
 		//we need to form an array of pairs for each demanded distance
-		var success = distances.every(function(elt, i, array) {
-			if(elt < 0 ){
+		var success = distances.every(function(distance, i, array) {
+			if(distance < 0 ){
 				throw "cannot create pairs of negative distances";
 			}
-			pairs[elt.toString()] = []
+			pairs[distance.toString()] = []
 			//enumerate all possible rating combinations that respect the given distance
 			var possibilities = [];
 			for(var i=0; i< 4; i++){ //TODO: allow arbitrary number of rating values
-				if(i+elt < 4){
-					possibilities.push([i.toString(), (i+elt).toString()]);
+				if(i+ditance < 4){
+					possibilities.push([i.toString(), (i+distance).toString()]);
 				}
 			}
 			
@@ -128,6 +132,7 @@ var ImageRater = (function(){
 			var pairCursor = 0;
 			var failure = false;
 			
+			//circling through the array of possibilities as long as we don't have enough pairs
 			while(pairCount < num_pairs){
 				if(possibilities.length === 0){
 					failure = true;
@@ -138,21 +143,60 @@ var ImageRater = (function(){
 				}
 				//choose which of the possible pair types to try
 				var pairType = possibilities[pairCursor];
-				// try to find a usable image for each rating in the pair
-				//TODO: prevent generating any pair that is the same
-				var first = getLeastUsed(pairType[0], repeat_limit);
+				// try to find a usable pair of images
+				var first;
 				var secnd;
-				if(first){
-					secnd = getLeastUsed(pairType[1], repeat_limit, first);
-				}
 				
+				
+				// Let's get the shuffled list of all image names that have been rated as the first rating of the current rating pair
+				var firstSubgroup = vault[pairType[0].toString()];
+				var firstImgCandidates = Object.keys(firstSubgroup);
+				shuffle(firstImgCandidates);
+				//Go through each of them, verifying that:
+				firstImgCandidates.some(function(candidateFirst){
+					//It has not been used more than the limit number of times
+					if(firstSubgroup[candidateFirst] >= repeat_limit) return false;
+					first = candidateFirst //we have a winner! store it in the 'first' variable
+					
+					//having found a first image that can still be used, iterate through all the images of the other rating making sure that:
+					var secndSubgroup = vault[pairType[1].toString()];
+					var secndImgCandidates = Object.keys(secndSubgroup);
+					shuffle(secndImgCandidates);
+					
+					var found = secndImgCandidates.some(function(candidateSecnd){ //see documentation for Array#some https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some
+						//1) it has not been used more than the repeat limit
+						usageCount = ratingSubgroup[candidateSecnd];
+						if(usageCount >= repeat_limit) return false; //used too often, pass!
+						//2) it would not form a pair that has already been used
+						if(alreadyHas(pairs[distance.toString()], [first, candidateSecnd])) return false;
+						//3) it is not the very same image
+						if(first == candidateSecnd) return false;
+						//we have a winner! assign to the 'secnd' variable
+						secnd = candidateSecnd;
+						return true;
+					})
+					if(found){
+						return true; //success!
+					}
+					else{
+						//we could not find a friend for the first image so we must return false and keep looking amond the firstImgCandidates...
+						return false
+					}
+				});
+
 				//if we could not find a suitable image for either rating, BUT don't abort, we might be able to reach enough pairs using other pairTypes
 				if(!(first && secnd)){
 					possibilities.splice(pairCursor, 1); //remove that possibility since we were not able to find a pair for it. Do not incremenent cursors since rest of array was shifted already
 				}
 				else{
-					//we found suitable image names, increment their usage count and return the pair
-					pairs[elt.toString()].push([first, secnd]);
+					//we found suitable image names! we must increment their usage count
+					vault[pairType[0].toString()][first] += 1;
+					vault[pairType[1].toString()][secnd] += 1;
+					
+					var thePair = [first, secnd];
+					//randomly shuffle the elements of the pair so that there is no bias
+					shuffle(thePair)
+					pairs[distance.toString()].push(thePair);
 					pairCursor++;
 					pairCount++;
 				}
