@@ -73,7 +73,7 @@ function runExperiment(){
 		jsPsych.init({
 			timeline: settings.timeline,
 			on_finish: function(data){
-				serverPsych.save(data);
+				serverPsych.save({data:data});
 			},
 			display_element: $('#jsPsychTarget')
 		});
