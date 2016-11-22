@@ -122,7 +122,7 @@ var ImageRater = (function(){
 			//enumerate all possible rating combinations that respect the given distance
 			var possibilities = [];
 			for(var i=0; i< 4; i++){ //TODO: allow arbitrary number of rating values
-				if(i+ditance < 4){
+				if(i+distance < 4){
 					possibilities.push([i.toString(), (i+distance).toString()]);
 				}
 			}
@@ -165,7 +165,7 @@ var ImageRater = (function(){
 					
 					var found = secndImgCandidates.some(function(candidateSecnd){ //see documentation for Array#some https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some
 						//1) it has not been used more than the repeat limit
-						usageCount = ratingSubgroup[candidateSecnd];
+						usageCount = secndSubgroup[candidateSecnd];
 						if(usageCount >= repeat_limit) return false; //used too often, pass!
 						//2) it would not form a pair that has already been used
 						if(alreadyHas(pairs[distance.toString()], [first, candidateSecnd])) return false;
