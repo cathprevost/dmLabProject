@@ -2,7 +2,9 @@
 	height: 300px;
 	width: 300px;
 	margin: 10px auto;
-	display: block;'
+	display: block;
+	align-self: center;
+	justify-content: center;
 }
 
 .jspsych-forcedchoice-stim{
@@ -11,10 +13,22 @@
 	margin: 5px 10px;
 }
 
-#jsPsychTarget{
-	padding-top: 200px;	
+.jspsych-content{
+	height: 100%;	
 }
 
-.jspsych-response{
+.jspsych-content-wrapper{
+	height:100%;
+}
+
+.jspsych-choice-list{
+	padding-left: 0;
+	/* display: inline; */
+	margin: auto 0;
 	text-align: center;
+}
+
+.jspsych-forcedchoice-stimHandler{
+	text-align:center;
+	font-size: 18pt;
 }
