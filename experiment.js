@@ -1,6 +1,11 @@
 
 
+
 function runExperiment(){
+	
+	
+	
+	
 	
 	serverPsych.request(function (settings){
 		//do things with the settings
