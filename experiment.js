@@ -79,8 +79,12 @@ function runExperiment(){
 			timeline: settings.timeline,
 			on_finish:function(data){
 				serverPsych.save({
-				data:data
+				data:data,
+				complete: false
 				})
+			},
+			on_trial_start:function(){
+				$("#jsPsychTarget")[0].scrollIntoView();
 			},
 			display_element: $('#jsPsychTarget')
 		});
