@@ -105,6 +105,16 @@ var ImageRater = (function(){
 		return false;
 	}
 	
+	/**
+	 * Initializes the vault with custom rating values
+	 */
+	module.initRatings = function(start, count){
+		vault = {};
+		for(var i=start; i<count+1; i++){
+			vault[i] = {};
+		};
+	}
+	
 	
 	/**
 	* 
