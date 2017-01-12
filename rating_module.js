@@ -307,14 +307,13 @@ var ImageRater = (function(){
 					
 					if(newplace){
 						timeline.splice(newplace, 0, wrongPair);
+						return timeline;
 					}
 					else{
 						shuffle(timeline);
 						tries++;
 					}
-					
 				}
-				
 			}
 			else{
 				return timeline;
