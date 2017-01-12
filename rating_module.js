@@ -58,6 +58,33 @@ var ImageRater = (function(){
 	}
 	
 	
+	
+	function checkCollision(first, second){
+		first.forEach(function(i){
+			second.forEach(function(j){
+				if(i === j) return true;
+			});
+		});
+		return false;
+	}
+	
+	
+	function hasRepeats(timeline){
+		var result = false;
+		timeline.forEach(function(elem, idx, arr){
+			if( idx+1 < arr.length ){
+				if(checkCollision(elem, arr[idx+1])){
+					result =  idx;
+				}
+			}
+		});
+		return result;
+	}
+	
+	
+
+	
+	
 	/**
 	* Stores a single image URL under an optional name in the store
 	*/
@@ -181,8 +208,10 @@ var ImageRater = (function(){
 						if(alreadyHas(pairs[distance.toString()], [first, candidateSecnd])) return false;
 						//3) it is not the very same image
 						if(first == candidateSecnd) return false;
+						
 						//we have a winner! assign to the 'secnd' variable
 						secnd = candidateSecnd;
+						
 						return true;
 					})
 					if(found){
@@ -206,6 +235,7 @@ var ImageRater = (function(){
 					var thePair = [first, secnd];
 					//randomly shuffle the elements of the pair so that there is no bias
 					shuffle(thePair)
+					
 					pairs[distance.toString()].push(thePair);
 					pairCursor++;
 					pairCount++;
@@ -246,7 +276,50 @@ var ImageRater = (function(){
 				}
 			}
 			shuffle(timeline);
-			return timeline;
+			//We must check here whether we have consecutive pairs that share even a single image.\
+			if(hasRepeats(timeline)){
+				var idx;
+				var tries=0;
+				while(idx = hasRepeats( timeline )){
+					
+					if(tries > 100){ //this horrible method is only slightly better than a bogosort https://en.wikipedia.org/wiki/Bogosort
+						throw "impossible to construct a timeline with no adjacent repeats of images"
+					}
+					
+					var wrongPair = timeline.splice(idx, 1);
+					var newplace;
+					
+					timeline.some(function(elem, i){
+						var prev = true;
+						var next = true;
+						if(i != 0){
+							prev = checkCollision(wrongPair, timeline[i-1]);
+						}
+						if(i < (timeline.length-1) ){
+							next = checkCollision(wrongPair, timeline[i+1]);
+						}
+						
+						if(prev && next){
+							newplace = i;
+							return true
+						}
+					});
+					
+					if(newplace){
+						timeline.splice(newplace, 0, wrongPair);
+					}
+					else{
+						shuffle(timeline);
+						tries++;
+					}
+					
+				}
+				
+			}
+			else{
+				return timeline;
+			}
+			
 		}
 		else{
 			return false
