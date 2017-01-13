@@ -85,7 +85,40 @@ var ImageRater = (function(){
 	}
 	
 	
-
+	function goodSpot(elem, idx, arr){
+		var prev = false;
+		var next = false;
+		if(idx != 0){
+			prev = checkCollision(elem, arr[i-1]);
+		}
+		if(idx < (timeline.length-1) ){
+			next = checkCollision(elem, arr[i+1]);
+		}
+		
+		if( !(prev && next)){
+			return true
+		}
+	}
+	
+	
+	function exchange(timeline, from, to){
+				
+		var movedElem = timeline[from];
+		var removedElem = timeline[to];
+		if( goodSpot(movedElem, to, timeline) && goodSpot(removedElem, from, timeline)){
+			//we can switch both pairs without problems!
+			
+			var temp1 = timeline.splice(from, 1);
+			var temp2 = timeline.splice(to, 1);
+			timeline.splice(from, 0, temp2);
+			timeline.splice(to, 0, temp1);
+			
+			return true
+		}
+		else{
+			return false
+		}
+	}
 	
 	
 	/**
@@ -290,37 +323,16 @@ var ImageRater = (function(){
 					}
 					
 					var success = false;
-					
-					
 					success = errors.every(function(error, i, array) {
-						var wrongPair = timeline.splice(error, 1)[0];
+						var wrongPair = timeline[error];
 						var newplace = false;
 						
 						timeline.some(function(elem, i){
-							var prev = false;
-							var next = false;
-							if(i != 0){
-								prev = checkCollision(wrongPair, timeline[i-1]);
-							}
-							if(i < (timeline.length-1) ){
-								next = checkCollision(wrongPair, timeline[i+1]);
-							}
-							
-							if( !(prev && next)){
-								newplace = i;
-								return true
+							if(exchange(timeline, error, i)){
+								return true;
 							}
 						});
-						
-						if(newplace !== false){
-							timeline.splice(newplace, 0, wrongPair);
-							return true;
-						}
-						else{
-							timeline.splice(error, 0, wrongPair);
-							return false;
-						}
-					})
+					});
 					
 					
 					if(success){
