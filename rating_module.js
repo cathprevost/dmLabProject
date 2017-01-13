@@ -70,15 +70,15 @@ var ImageRater = (function(){
 	
 	
 	function hasRepeats(timeline){
-		var result = false;
+		var result = [];
 		timeline.forEach(function(elem, idx, arr){
 			if( idx+1 < arr.length ){
 				if(checkCollision(elem, arr[idx+1])){
-					result =  idx;
+					result.push(idx);
 				}
 			}
 		});
-		return result;
+		return result.length > 0 ? result : false;
 	}
 	
 	
@@ -278,35 +278,48 @@ var ImageRater = (function(){
 			shuffle(timeline);
 			//We must check here whether we have consecutive pairs that share even a single image.\
 			if(hasRepeats(timeline)){
-				var idx;
+				var errors;
 				var tries=0;
-				while(idx = hasRepeats( timeline )){
+				while(errors = hasRepeats( timeline )){
 					
 					if(tries > 100){ //this horrible method is only slightly better than a bogosort https://en.wikipedia.org/wiki/Bogosort
 						throw "impossible to construct a timeline with no adjacent repeats of images"
 					}
 					
-					var wrongPair = timeline.splice(idx, 1);
-					var newplace;
+					var success = false;
 					
-					timeline.some(function(elem, i){
-						var prev = true;
-						var next = true;
-						if(i != 0){
-							prev = checkCollision(wrongPair, timeline[i-1]);
-						}
-						if(i < (timeline.length-1) ){
-							next = checkCollision(wrongPair, timeline[i+1]);
-						}
+					
+					success = errors.every(function(error, i, array) {
+						var wrongPair = timeline.splice(error, 1)[0];
+						var newplace;
 						
-						if(prev && next){
-							newplace = i;
-							return true
+						timeline.some(function(elem, i){
+							var prev = true;
+							var next = true;
+							if(i != 0){
+								prev = checkCollision(wrongPair, timeline[i-1]);
+							}
+							if(i < (timeline.length-1) ){
+								next = checkCollision(wrongPair, timeline[i+1]);
+							}
+							
+							if(prev && next){
+								newplace = i;
+								return true
+							}
+						});
+						
+						if(newplace){
+							timeline.splice(newplace, 0, wrongPair);
+							return true;
 						}
-					});
+						else{
+							return false;
+						}
+					})
 					
-					if(newplace){
-						timeline.splice(newplace, 0, wrongPair);
+					
+					if(success){
 						return timeline;
 					}
 					else{
@@ -318,7 +331,6 @@ var ImageRater = (function(){
 			else{
 				return timeline;
 			}
-			
 		}
 		else{
 			return false
