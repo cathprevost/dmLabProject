@@ -60,12 +60,15 @@ var ImageRater = (function(){
 	
 	
 	function checkCollision(first, second){
+		var res = false;
 		first.forEach(function(i){
 			second.forEach(function(j){
-				if(i === j) return true;
+				if(i === j){
+					res = true;
+				};
 			});
 		});
-		return false;
+		return res;
 	}
 	
 	
