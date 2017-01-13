@@ -108,8 +108,8 @@ var ImageRater = (function(){
 		if( goodSpot(movedElem, to, timeline) && goodSpot(removedElem, from, timeline)){
 			//we can switch both pairs without problems!
 			
-			var temp1 = timeline.splice(from, 1);
-			var temp2 = timeline.splice(to, 1);
+			var temp1 = timeline.splice(from, 1)[0];
+			var temp2 = timeline.splice(to, 1)[0];
 			timeline.splice(from, 0, temp2);
 			timeline.splice(to, 0, temp1);
 			
