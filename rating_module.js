@@ -317,6 +317,7 @@ var ImageRater = (function(){
 							return true;
 						}
 						else{
+							timeline.splice(error, 0, wrongPair);
 							return false;
 						}
 					})
