@@ -294,11 +294,11 @@ var ImageRater = (function(){
 					
 					success = errors.every(function(error, i, array) {
 						var wrongPair = timeline.splice(error, 1)[0];
-						var newplace;
+						var newplace = false;
 						
 						timeline.some(function(elem, i){
-							var prev = true;
-							var next = true;
+							var prev = false;
+							var next = false;
 							if(i != 0){
 								prev = checkCollision(wrongPair, timeline[i-1]);
 							}
@@ -306,13 +306,13 @@ var ImageRater = (function(){
 								next = checkCollision(wrongPair, timeline[i+1]);
 							}
 							
-							if(prev && next){
+							if( !(prev && next)){
 								newplace = i;
 								return true
 							}
 						});
 						
-						if(newplace){
+						if(newplace !== false){
 							timeline.splice(newplace, 0, wrongPair);
 							return true;
 						}
