@@ -327,7 +327,7 @@ var ImageRater = (function(){
 						var wrongPair = timeline[error];
 						var newplace = false;
 						
-						timeline.some(function(elem, i){
+						return timeline.some(function(elem, i){
 							if(exchange(timeline, error, i)){
 								return true;
 							}
