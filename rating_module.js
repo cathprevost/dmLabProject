@@ -91,7 +91,7 @@ var ImageRater = (function(){
 		if(idx != 0){
 			prev = checkCollision(elem, arr[i-1]);
 		}
-		if(idx < (timeline.length-1) ){
+		if(idx < (arr.length-1) ){
 			next = checkCollision(elem, arr[i+1]);
 		}
 		
