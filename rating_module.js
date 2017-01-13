@@ -89,10 +89,10 @@ var ImageRater = (function(){
 		var prev = false;
 		var next = false;
 		if(idx != 0){
-			prev = checkCollision(elem, arr[i-1]);
+			prev = checkCollision(elem, arr[idx-1]);
 		}
 		if(idx < (arr.length-1) ){
-			next = checkCollision(elem, arr[i+1]);
+			next = checkCollision(elem, arr[idx+1]);
 		}
 		
 		if( !(prev && next)){
