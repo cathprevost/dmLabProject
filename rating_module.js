@@ -238,7 +238,7 @@ var ImageRater = (function(){
 					
 					var found = secndImgCandidates.some(function(candidateSecnd){ //see documentation for Array#some https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some
 						//1) it has not been used more than the repeat limit
-						usageCount = secndSubgroup[candidateSecnd];
+						var usageCount = secndSubgroup[candidateSecnd];
 						if(usageCount >= repeat_limit) return false; //used too often, pass!
 						//2) it would not form a pair that has already been used
 						if(alreadyHas(pairs[distance.toString()], [first, candidateSecnd])) return false;
