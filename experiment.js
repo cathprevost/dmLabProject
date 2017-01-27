@@ -80,7 +80,7 @@ function runExperiment(){
 			on_finish:function(data){
 				serverPsych.save({
 				data:data,
-				complete: false
+				complete: true
 				})
 			},
 			on_trial_start:function(){
