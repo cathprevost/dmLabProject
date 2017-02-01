@@ -311,38 +311,32 @@ var ImageRater = (function(){
 					timeline = timeline.concat(pairs[dist]);
 				}
 			}
-			shuffle(timeline);
+			shuffle(timeline)
+			var errors;
+			
 			//We must check here whether we have consecutive pairs that share even a single image.\
-			if(hasRepeats(timeline)){
+			if( errors = hasRepeats(timeline)){
 				var errors;
-				var tries=0;
-				while(errors = hasRepeats( timeline )){
+				var giveUpCounter=100;
+				
+				while(errors && giveUpCounter > 0){
 					
-					if(tries > 100){ //this horrible method is only slightly better than a bogosort https://en.wikipedia.org/wiki/Bogosort
-						throw "impossible to construct a timeline with no adjacent repeats of images"
+					for(var i=1;i<timeline.length;i++){
+						if(checkCollision(timeline[i], timeline[i-1])){
+							var next = (i+1) % timeline.length
+							var tmp = timeline.splice(i, 1, timeline[next])[0];
+							timeline.splice(next, 1, tmp);
+						}
 					}
-					
-					var success = false;
-					success = errors.every(function(error, i, array) {
-						var wrongPair = timeline[error];
-						var newplace = false;
-						
-						return timeline.some(function(elem, i){
-							if(exchange(timeline, error, i)){
-								return true;
-							}
-						});
-					});
-					
-					
-					if(success){
-						return timeline;
+					if(errors = hasRepeats(timeline)){
+						giveUpCounter--;
 					}
 					else{
-						shuffle(timeline);
-						tries++;
+						return timeline;
 					}
 				}
+				//we failed...
+				return false;
 			}
 			else{
 				return timeline;
