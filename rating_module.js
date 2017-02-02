@@ -324,11 +324,17 @@ var ImageRater = (function(){
 					for(var i=1;i<timeline.length;i++){
 						if(checkCollision(timeline[i], timeline[i-1])){
 							var next = (i+1) % timeline.length
+							if(checkCollision(timeline[i-1], timeline[next]) && !checkCollision(timeline[i], timeline[next])){
+								//we have a weird deadlock case...
+								next = (next+1) % timeline.length;
+							}
 							var tmp = timeline.splice(i, 1, timeline[next])[0];
-							timeline.splice(next, 1, tmp);
+							timeline.splice(next, 1, tmp);	
 						}
 					}
-					if(errors = hasRepeats(timeline)){
+					
+					errors = hasRepeats(timeline);
+					if(errors){
 						giveUpCounter--;
 					}
 					else{
